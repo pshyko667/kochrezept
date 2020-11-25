@@ -50,6 +50,9 @@ CREATE TABLE IF NOT EXISTS rezept_zutat (
 	fk_zutat_id INT,
 	fk_mengeneinheit_id INT,
 	rezept_zutat_menge INT
+	FOREIGN KEY (fk_mengeneinheit_id) REFERENCES mengeneinheit (mengeneinheit_id)
+	ON UPDATE CASCADE
+	ON DELETE NO ACTION
 );
 
 -- create table zutat_kategorie
