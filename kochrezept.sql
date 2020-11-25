@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS rezept_kategorie (
 	rezept_kategorie_id INT NOT NULL AUTO_INCREMENT,
 	rezept_kategorie_name VARCHAR(50),
 	rezept_kategorie_beschreibung VARCHAR(100),
-	PRIMARY KEY (rezept_kategorie_id)
+	PRIMARY KEY (rezept_kategorie_id)	
 );
 
 INSERT INTO rezept_kategorie (rezept_kategorie_name, rezept_kategorie_beschreibung)
@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS rezept (
 	rezept_name VARCHAR(50),
 	rezept_beschreibung VARCHAR(100),
 	rezept_tipp VARCHAR(200),
+	rezept_portionen INT,
 	fk_rezept_kategorie_id INT,
 	PRIMARY KEY (rezept_id),
 	FOREIGN KEY rezept (fk_rezept_kategorie_id) REFERENCES rezept_kategorie (rezept_kategorie_id)
@@ -36,8 +37,8 @@ CREATE TABLE IF NOT EXISTS rezept (
 	ON UPDATE NO ACTION
 );
 
-INSERT INTO rezept (rezept_name, fk_rezept_kategorie_id)
-VALUES ('Giselas genialer Hefekranz', '1'), ('Lowcarb-Semmeln selbst gemacht', '1'), ('Rinderfile am Wildsaumagen', '3'), ('Kalte Platte', '3'), ('Grießbrei wie von Muttern', '6'), ('Waldpilz Salat', '4'), ('Mexikanischer Tofu-Salat', '4');
+INSERT INTO rezept (rezept_name, rezept_portionen, fk_rezept_kategorie_id)
+VALUES ('Giselas genialer Hefekranz', 1, 1), ('Lowcarb-Semmeln selbst gemacht', 4, 1), ('Rinderfile am Wildsaumagen', 4, 3), ('Kalte Platte', 4, 3), ('Grießbrei wie von Muttern', 4, 6), ('Waldpilz Salat', 1, 4), ('Mexikanischer Tofu-Salat', 1, 4);
 
 
 -- create table rezept_zutat - n:m
@@ -62,8 +63,8 @@ CREATE TABLE IF NOT EXISTS zutat_kategorie (
 	PRIMARY KEY (zutat_kategorie_id)
 );
 
-INSERT INTO zutat_kategorie (zutat_kategorie_name)
-VALUES('Nudeln'), ('Gemüse'), ('Fisch'), ('Fleisch');
+INSERT INTO zutat_kategorie (zutat_kategorie_name, zutat_kategorie_id)
+VALUES('Nudeln', 1), ('Gemüse/Salate', 2), ('Fisch', 3), ('Fleisch', 4), ('Sonstiges', 5);
 
 -- create table zutat
 
@@ -74,13 +75,19 @@ CREATE TABLE IF NOT EXISTS zutat (
 	zutat_name VARCHAR(50),
 	zutat_kalorien FLOAT,
 	zutat_beschreibung VARCHAR(100),
-	fk_zutat_kategorie INT,
+	fk_zutat_kategorie_id INT,
 	PRIMARY KEY (zutat_id),
-	FOREIGN KEY zutat (fk_zutat_kategorie) REFERENCES zutat_kategorie (zutat_kategorie_id)
+	FOREIGN KEY zutat (fk_zutat_kategorie_id) REFERENCES zutat_kategorie (zutat_kategorie_id)
+	ON UPDATE CASCADE
 	ON DELETE NO ACTION
-	ON UPDATE NO ACTION
-
 );
+
+INSERT INTO zutat (zutat_name, fk_zutat_kategorie_id)
+VALUES 	('Spaghetti', 1), ('Tagliatelle', 1), ('Makkaroni', 1), ('Farfalle', 1),
+				('Brokkoli', 2), ('Blumenkohl', 2), ('Bärlauch', 2), ('Eichblattsalat', 2), ('Rucola', 2),
+				('Seelachs', 3), ('Barsch', 3), ('Forelle', 3),
+				('Schweinefleisch', 4), ('Rindfleisch', 4),
+				('Butter', 5), ('Wasser', 5);
 
 -- create table mengeneinheit
 
@@ -94,4 +101,4 @@ CREATE TABLE IF NOT EXISTS mengeneinheit (
 );
 
 INSERT INTO mengeneinheit (mengeneinheit_name, mengeneinheit_kurz)
-VALUES('Milligramm', 'mg'), ('Gramm', 'g'), ('Kilogramm', 'kg'), ('Liter', 'L'), ('Milliliter', 'ml');
+VALUES('Milligramm', 'mg'), ('Gramm', 'g'), ('Kilogramm', 'kg'), ('Liter', 'L'), ('Milliliter', 'ml'), ('Esslöffel', 'EL');
