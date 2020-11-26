@@ -168,7 +168,42 @@ GROUP BY
   'Anzahl', zutat_kategorie_name
 ;
 
+-- SINA MASTERCLASS
+-- 12 REZEPTE nach KATEGORIE mit PORTIONEN und ZUTATEN (ohne LIMIT 1)
 
+SELECT
+  *
+FROM (
+  SELECT -- SUBSELECT 1
+    COUNT(*) AS Anzahl_Rezepte,
+    rk.rezept_kategorie_name AS Kategorie
+  FROM
+    rezept r,
+    rezept_kategorie rk
+  WHERE
+    r.fk_rezept_kategorie_id = rk.rezept_kategorie_id
+  GROUP BY
+    rk.rezept_kategorie_name
+  ORDER BY
+    Anzahl_Rezepte) AS neuTab
+WHERE
+  Anzahl_Rezepte = (
+    SELECT -- SUBSELECT 2
+      MAX(Anzahl_Rezepte)
+    FROM (
+      SELECT -- SUBSELECT 3
+        COUNT(*) AS Anzahl_Rezepte,
+        rk.rezept_kategorie_name AS Kategorie
+      FROM
+        rezept r,
+        rezept_kategorie rk
+      WHERE
+        r.fk_rezept_kategorie_id = rk.rezept_kategorie_id
+      GROUP BY
+        rk.rezept_kategorie_name
+      ORDER BY
+        Anzahl_Rezepte) AS neuTab)
+;
 
 
 
