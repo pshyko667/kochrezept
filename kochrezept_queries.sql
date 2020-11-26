@@ -185,7 +185,6 @@ WHERE
   AND fk_zutat_id = zutat_id
   AND fk_zutat_kategorie_id
   AND fk_rezept_kategorie_id = rezept_kategorie_id
-  /*AND fk_zutat_kategorie_id = zutat_kategorie_id*/
   AND rezept_name LIKE '%tofu%'
   OR rezept_beschreibung LIKE '%tofu%'
 GROUP BY
