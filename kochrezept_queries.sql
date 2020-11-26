@@ -168,8 +168,55 @@ GROUP BY
   'Anzahl', zutat_kategorie_name
 ;
 
+-- 12 REZEPTE mit ">Tofu"
+
+SELECT
+  rezept_name AS 'Rezept',
+  rezept_beschreibung AS 'Beschreibung',
+  rezept_kategorie_name 'Kategorie'
+FROM
+  zutat,
+  /*zutat_kategorie,*/
+  rezept,
+  rezept_zutat,
+  rezept_kategorie
+WHERE
+  fk_rezept_id = rezept_id
+  AND fk_zutat_id = zutat_id
+  AND fk_zutat_kategorie_id
+  AND fk_rezept_kategorie_id = rezept_kategorie_id
+  /*AND fk_zutat_kategorie_id = zutat_kategorie_id*/
+  AND rezept_name LIKE '%tofu%'
+  OR rezept_beschreibung LIKE '%tofu%'
+GROUP BY
+  rezept_name, rezept_kategorie_name, rezept_id
+LIMIT 4
+
+-- 13 REZEPTE mit ZUTATEN über 350 KALORIEN
+
+SELECT
+  rezept_kategorie_name AS 'Kategorie',
+  rezept_name AS 'Rezeptname',
+  rezept_portionen AS 'Portionen',
+  zutat_name AS 'Zutat',
+  zutat_kalorien AS 'Kalorien'
+FROM
+  rezept,
+  rezept_kategorie,
+  zutat,
+  rezept_zutat
+WHERE
+  rezept_id = fk_rezept_id
+  AND fk_rezept_kategorie_id = rezept_kategorie_id
+  AND fk_zutat_id = zutat_id
+  AND zutat_id = fk_zutat_id
+  AND rezept_zutat_menge > 350
+ORDER BY
+  zutat_kalorien
+;
+
 -- SINA MASTERCLASS
--- 12 REZEPTE nach KATEGORIE mit PORTIONEN und ZUTATEN (ohne LIMIT 1)
+-- XX REZEPTE nach KATEGORIE mit PORTIONEN und ZUTATEN (ohne LIMIT 1)
 
 SELECT
   *
