@@ -154,9 +154,19 @@ ORDER BY
 LIMIT 1
 ;
 
---
+-- 11 ANZAHL ZUTATEN in KATEGORIE
 
-
+SELECT
+  COUNT(zutat_kategorie_name) AS 'Anzahl',
+  zutat_kategorie_name AS 'Zutat-Kategorie'
+FROM
+  zutat,
+  zutat_kategorie
+WHERE
+  fk_zutat_kategorie_id = zutat_kategorie_id
+GROUP BY
+  'Anzahl', zutat_kategorie_name
+;
 
 
 
