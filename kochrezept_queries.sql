@@ -175,15 +175,11 @@ SELECT
   rezept_beschreibung AS 'Beschreibung',
   rezept_kategorie_name 'Kategorie'
 FROM
-  zutat,
-  /*zutat_kategorie,*/
   rezept,
   rezept_zutat,
   rezept_kategorie
 WHERE
   fk_rezept_id = rezept_id
-  AND fk_zutat_id = zutat_id
-  AND fk_zutat_kategorie_id
   AND fk_rezept_kategorie_id = rezept_kategorie_id
   AND rezept_name LIKE '%tofu%'
   OR rezept_beschreibung LIKE '%tofu%'
